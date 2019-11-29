@@ -33,20 +33,41 @@ function useTimes(sortBy = 'TIME_ASC') {
             return () => unsubscribe()
     }, [sortBy])
     return times;
+
+  
 }
 
-function handleContent (d) {
-    console.log('content', d)
-    if(d === 'test2'){
-        console.log('test2123')
-    }
+function handleContent (d, t) {
+    //console.log('content', d, t)
+   // const [times, setTimes] = useState()
+   // console.log('object',Object.values(d))
+    const times = [...t]
+    //console.log('handle',times)
+    const filter = times.filter( (item) => item.id === d)
+    //console.log('filter',filter)
+    return filter;
+
 }
 const TimeList = () => {
 
     
     const [sortBy, setSortBy] = useState('TIME_ASC');
     const times = useTimes(sortBy);
+   // console.log('times',times)
 
+    const displayLists =     times.map( (time) => (
+
+        <li key={time.id}  onClick={() => handleContent(time.id, times)}>
+        <div className="list-entry">
+       {time.title} <code className="list-author">{time.time_seconds}</code>
+        </div>
+       <div className="list-content">{time.content}</div>
+    </li>
+       ));
+
+
+   const displayContent = times.filter( (item) => item.id === "VFtDSkargiazOrftprGE");
+//console.log('content', displayContent[0].id)
     return (
         <div>
             <label>Sort By:</label>
@@ -58,19 +79,14 @@ const TimeList = () => {
                 <option value="TITLE_DESC">Title z-a</option>
             </select>
             <ol>
-                {
-                   times.map( (time) => (
-
-                    <li key={time.id} onClick={handleContent(time.content)}>
-                    <div className="list-entry" >
-                   {time.title} <code className="list-author">{time.time_seconds}</code>
-                    </div>
-                   <div className="list-content">{time.content}</div>
-                </li>
-                   ))
-                }
+                { displayLists  }
             </ol>
-       
+
+            <div style={{color: 'red'}}>
+                {
+                
+                }
+            </div>
         </div>
     )
 }
